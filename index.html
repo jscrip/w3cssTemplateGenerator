@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Title Goes Here</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+    body{
+      min-width: 200px;
+    }
+    .w3-bar{
+      opacity:0.75;
+      background-color: #282828;
+      color:#FFFFFF;
+      min-width: 200px;
+    }
+    .w3-top{
+      background-color: #87CEEB;
+      min-width: 200px;
+    }
+      .w3-top + .content {
+        padding-top: 102px;
+}
+        @media only screen and (max-width: 600px) {
+          .w3-top + .content {
+  padding-top: 120px;
+}
+        }
+        @media only screen and (max-width: 520px) {
+          .w3-top + .content {
+  padding-top: 150px;
+}
+        }
+        @media only screen and (max-width: 360px) {
+          .w3-top + .content {
+  padding-top: 200px;
+}
+        }
+        @media only screen and (max-width: 200px) {
+          .w3-top + .content {
+  padding-top: 270px;
+}
+        }
+        @media only screen and (max-width: 150px) {
+          .w3-top + .content {
+  padding-top: 320px;
+}
+        }
+        .itemContainer{
+          opacity:0.85;
+          padding-top: 100%;
+        }
+        .itemCard{
+
+        }
+        .itemCard > img{
+          width:100%;
+          min-height:150px;
+          opacity:0.5;
+        }
+        .itemTitle > h4{
+          opacity:0.8;
+          min-height: 40px;
+          max-height:40px;
+        }
+        .content{
+          min-width: 200px;
+        }
+    </style>
+  </head>
+  <body>
+
+<!-- Sticky navigation. -->
+<div class="w3-top">
+	<div class="w3-container">
+		<h1>Page Title Goes Here</h1>
+	</div>
+  	<div class="w3-bar">
+   	  <a href="#" class="w3-bar-item w3-button">Home</a>
+      <button onclick="changeLayout('w3-col');" class="w3-bar-item w3-button">Full Page</a>
+      <button onclick="changeLayout('w3-half');" class="w3-bar-item w3-button">Half</a>
+      <button onclick="changeLayout('w3-third');" class="w3-bar-item w3-button">Third</a>
+      <button onclick="changeLayout('w3-quarter');" class="w3-bar-item w3-button">Quarter</a>
+      <button onclick="save();" class="w3-bar-item w3-button w3-white genScript w3-right">Save</a>
+  	</div>
+</div>
+
+<!-- Main Content Container. -->
+<div class="w3-container content">
+  <!-- Responsive Grid -->
+  <div class="w3-row-padding w3-margin-top gridItemRow"></div>
+</div>
+<!-- End Main Content Container. -->
+<script>
+var gridItemRow = document.querySelector(".gridItemRow");
+var itemContainer = document.querySelector(".itemContainer");
+var layout;
+
+var nextItem = 0;
+var replaceWithFetchPage = async (n) => {
+  var items = [];
+  var i;
+  for (i = 0; i < n; i++) {
+    var title = "Dynamic Title ";
+    items.push({title:title+nextItem})
+    nextItem++;
+  }
+  return items;
+}
+var loadItems = async function(n) {
+  var itemContainer = document.querySelector(".itemContainer");
+  layout = await [...itemContainer.classList].find(className => ["w3-margin-bottom","itemContainer"].indexOf(className) == -1);
+  var items = await replaceWithFetchPage(15);
+  items.forEach(item => {
+    var gridItem = `
+    <div class="${layout} w3-margin-bottom itemContainer">
+  	 <div class="w3-card itemCard">
+  		 <img src="">
+  		   <div class="w3-container w3-center itemTitle">
+  			    <h4 class="w3-tiny"><b>${item.title}</b></h4>
+  		   </div>
+     </div>
+    </div>
+  `;
+  gridItemRow.innerHTML += gridItem;
+})
+  return "Items Loaded";
+}
+
+//Infinite Scroll - once we reach the bottom of the page, load more items
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        loadItems(9);
+    }
+};
+function changeLayout(input="w3-third"){
+  layout = input;
+  [...document.querySelectorAll(".itemContainer")].forEach(item => {
+    [...item.classList].forEach(className => {
+      if(["w3-margin-bottom","itemContainer"].indexOf(className) == -1){
+        item.classList.remove(className);
+      }
+    })
+    item.classList.add(input);
+  })
+}
+</script>
+
+<script class="genScript">
+
+//Strips the generator code out of the template files (called on save())
+function stripScripts(s) {
+  var div = document.createElement('div');
+  div.innerHTML = s;
+  var scripts = [...div.querySelectorAll('.genScript')];
+  var i = scripts.length;
+  while (i--) {
+    scripts[i].parentNode.removeChild(scripts[i]);
+  }
+  return div.innerHTML;
+}
+
+var loadItems = async function(n) {
+  var items = await replaceWithFetchPage(15);
+  console.log(items);
+  items.forEach(item => {
+
+
+    var itemContainer = document.querySelector(".itemContainer");
+    if(itemContainer){
+      layout = [...itemContainer.classList].find(className => ["w3-margin-bottom","itemContainer"].indexOf(className) == -1);
+    }else{
+      layout = "w3-third";
+    }
+
+      var randomColor = getRandomColor();
+      var textColor = idealTextColor(randomColor);
+    var gridItem = `
+    <div class="${layout} w3-margin-bottom itemContainer">
+  	 <div class="w3-card itemCard" style="background-color:${randomColor}; color:${textColor};">
+  		 <img src="">
+  		   <div class="w3-container w3-center itemTitle" style="background-color:${randomColor};">
+  			    <h4 class="w3-tiny"><b>${item.title.slice(0, 60)}</b></h4>
+  		   </div>
+     </div>
+    </div>
+  `;
+  gridItemRow.innerHTML += gridItem;
+})
+return "Items Loaded";
+}
+
+function getColorScheme(){
+  var itemCard = document.querySelector(".itemCard");
+  var itemTitle = itemCard.querySelector(".itemTitle");
+
+  colorScheme = {
+    textColor:itemCard.style.color,
+    bgColor:itemCard.style.backgroundColor
+  };
+    return colorScheme;
+}
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function idealTextColor(bgColor) {
+   var nThreshold = 105;
+   var components = getRGBComponents(bgColor);
+   var bgDelta = (components.R * 0.299) + (components.G * 0.587) + (components.B * 0.114);
+   return ((255 - bgDelta) < nThreshold) ? "#000000" : "#ffffff";
+}
+
+function getRGBComponents(color) {
+    var r = color.substring(1, 3);
+    var g = color.substring(3, 5);
+    var b = color.substring(5, 7);
+    return {
+       R: parseInt(r, 16),
+       G: parseInt(g, 16),
+       B: parseInt(b, 16)
+    };
+}
+
+function save() {
+  var items = [...gridItemRow.querySelectorAll(".itemContainer")];
+  if(items.length > 15){
+    var nToRemove = items.length - 15;
+    for (var i = 0; i < nToRemove; i++) {
+      gridItemRow.removeChild(gridItemRow.lastElementChild);
+    }
+  }
+  var itemCard = document.querySelector('.itemCard');
+  var itemTitle = itemCard.querySelector(".itemTitle");
+  var topNav = document.querySelector(".w3-top");
+
+  var cssStyle = `
+    .w3-top{
+        background-color: ${itemCard.style.backgroundColor};
+        color:${itemCard.style.color};
+      }
+
+      .itemCard{
+          background-color:${itemCard.style.backgroundColor};
+          color:${itemCard.style.color};
+      }
+
+      .itemTitle{
+        color:${itemCard.style.color};
+      }
+  `
+
+    var styleTag = document.createElement("style");
+    styleTag.innerHTML = cssStyle;
+
+  var items = [...gridItemRow.querySelectorAll(".itemContainer")];
+    for (var i = 0; i < items.length; i++) {
+      var itemCard = items[i].querySelector('.itemCard');
+      var itemTitle = items[i].querySelector(".itemTitle");
+      itemCard.removeAttribute('style');
+      itemTitle.removeAttribute('style');
+    }
+
+  document.querySelector("head").appendChild(styleTag);
+
+
+  var htmlContent = [stripScripts(document.documentElement.innerHTML)];
+  var bl = new Blob(htmlContent, {type: "text/html"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(bl);
+  a.download = "template.html";
+  a.hidden = true;
+  document.body.appendChild(a);
+  a.innerHTML = "";
+  a.click();
+}
+
+//Global Settings
+// self executing function here
+var colorScheme = {};
+(async function() {
+  await loadItems(15);
+  getColorScheme();
+})();
+
+
+gridItemRow.addEventListener('click', (e) => {
+  var parent = e.target.parentNode;
+  var titleParent = parent.querySelector('.itemTitle').parentNode;
+  var textColor = titleParent.style.color;
+  var bgColor = parent.style.backgroundColor;
+  [...document.querySelectorAll(".itemCard")].forEach(itemCard => {
+    var itemTitle = itemCard.querySelector(".itemTitle");
+    itemTitle.style.backgroundColor = bgColor;
+    itemCard.style.backgroundColor = bgColor;
+    itemCard.style.color = textColor;
+  })
+  colorScheme = {
+    textColor:textColor,
+    bgColor:bgColor
+  };
+  var topNav = document.querySelector(".w3-top");
+  var navBar = topNav.querySelector(".w3-bar");
+  topNav.style.backgroundColor = bgColor;
+  topNav.style.color = textColor;
+
+})
+</script>
+</body>
+</html>
